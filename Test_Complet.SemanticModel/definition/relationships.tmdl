@@ -1,0 +1,95 @@
+relationship aad3cd47-0402-4ccf-bfaa-ee8bb57251b6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: TTS.date_insertion
+	toColumn: LocalDateTable_6dd0962d-c4fd-4d01-9add-ce5e22229237.Date
+
+relationship 434fa637-9384-4642-b469-46ee759648e4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: RECLAMATIONS.date_assignation
+	toColumn: LocalDateTable_a27967d0-c361-422c-8161-caab70d135ec.Date
+
+relationship 2a2db52f-4b96-4d00-8f28-a826c7c6b608
+	joinOnDateBehavior: datePartOnly
+	fromColumn: RECLAMATIONS.date_traitement
+	toColumn: LocalDateTable_729be688-5183-4773-b1d7-32e912850907.Date
+
+relationship AutoDetected_1f47609b-de66-4730-83d2-7ec841c23c96
+	fromColumn: TTS.campagne
+	toColumn: DIM_CAMPAGNE.campagne
+
+relationship AutoDetected_2e9a8f20-7813-4138-937d-872675caa092
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: RECLAMATIONS.id_hash
+	toColumn: TTS.id_hash
+
+relationship AutoDetected_6b2dc768-d3f9-47d3-8845-69c0db7ac5dc
+	fromColumn: RECLAMATIONS.statut_traitement
+	toColumn: DIM_ASSIGNATION.statut_traitement
+
+relationship 9f41d64b-2aa2-469e-998d-cf7627c32121
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mv_retour_actif_prepaid.mois_appel
+	toColumn: LocalDateTable_ca5c231e-31de-41af-a64c-46341355513d.Date
+
+relationship e14bb5ee-3078-409a-9192-c1a99b028920
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mv_retour_actif_postpaid.mois_appel
+	toColumn: LocalDateTable_336d9f96-b218-47fb-b91f-bbd9527cf43b.Date
+
+relationship 84a026b3-b971-42a6-87a8-1d2e578033de
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mv_retour_actif_recla_prepaid.mois_recla
+	toColumn: LocalDateTable_b9763a0b-0633-4a5c-957f-3855feba6354.Date
+
+relationship 2e568f8c-f98b-45d2-ad1b-10f9b3797d70
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mv_retour_actif_recla_postpaid.mois_recla
+	toColumn: LocalDateTable_0e7ac798-868c-494e-a2d9-7d9679bbfd93.Date
+
+relationship AutoDetected_77cd6b72-6b15-47b1-9ad5-f745c3b66f8b
+	fromColumn: mv_retour_actif_prepaid.campagne
+	toColumn: DIM_CAMPAGNE.campagne
+
+relationship AutoDetected_8cb5f43b-0883-4737-9170-837a4ad1f64f
+	fromColumn: mv_retour_actif_postpaid.campagne
+	toColumn: DIM_CAMPAGNE.campagne
+
+relationship AutoDetected_9e111d4a-1d09-4b0a-ae0a-ae79e46ac413
+	fromColumn: mv_retour_actif_recla_prepaid.campagne
+	toColumn: DIM_CAMPAGNE.campagne
+
+relationship AutoDetected_6044231a-1563-487c-8882-ce58c3d40a97
+	fromColumn: mv_retour_actif_recla_postpaid.campagne
+	toColumn: DIM_CAMPAGNE.campagne
+
+relationship 0965be71-15b8-40a9-b04e-3861d849825c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimDate.Date
+	toColumn: LocalDateTable_08d19bca-9268-47f2-addd-32876dbd6d52.Date
+
+relationship ce5b6554-4347-453a-9594-5f87f66c32d7
+	fromColumn: mv_retour_actif_prepaid.jour
+	toColumn: DimDate.Date
+
+relationship a4ca659b-0b6f-3d38-b228-40fe05efd68e
+	fromColumn: mv_retour_actif_recla_postpaid.jour
+	toColumn: DimDate.Date
+
+relationship e9317402-f8f8-fbf4-a1c3-02ab0698c85f
+	fromColumn: mv_retour_actif_postpaid.jour
+	toColumn: DimDate.Date
+
+relationship e9be71cb-6ab8-61ef-f6d2-bb4619f88d01
+	fromColumn: mv_retour_actif_recla_prepaid.jour
+	toColumn: DimDate.Date
+
+relationship c9a0be58-bb5c-f2ef-ad97-ecdff806f08a
+	fromColumn: TTS.startdate
+	toColumn: DimDate.Date
+
+relationship da1ed583-1aa0-4bca-af40-133888c194d2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: RECLAMATIONS.startdate
+	toColumn: LocalDateTable_e34f774b-d01e-484f-aabf-f4bad495b1f7.Date
+

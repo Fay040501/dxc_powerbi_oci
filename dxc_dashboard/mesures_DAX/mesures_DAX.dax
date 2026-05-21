@@ -1,0 +1,237 @@
+-- ============================================================
+-- MESURES DAX — Dashboard DXC Orange CI
+-- Page TTS + Page Réclamations
+-- ============================================================
+
+-- ============================================================
+-- TABLE DATE
+-- ============================================================
+
+DimDate =
+VAR DateMin = MIN(tb_tts[startdate])
+VAR DateMax =
+    MAXX(
+        UNION(
+            SELECTCOLUMNS(tb_tts, "date", tb_tts[startdate]),
+            SELECTCOLUMNS(mv_retour_actif_prepaid, "date", mv_retour_actif_prepaid[jour]),
+            SELECTCOLUMNS(mv_retour_actif_postpaid, "date", mv_retour_actif_postpaid[jour]),
+            SELECTCOLUMNS(mv_retour_actif_recla_prepaid, "date", mv_retour_actif_recla_prepaid[jour]),
+            SELECTCOLUMNS(mv_retour_actif_recla_postpaid, "date", mv_retour_actif_recla_postpaid[jour]),
+            SELECTCOLUMNS(tb_reclamations, "date", tb_reclamations[startdate])
+        ),
+        [date]
+    )
+RETURN
+GENERATE(
+    CALENDAR(DateMin, DateMax),
+    VAR An = YEAR([Date])
+    VAR Semestre = IF(QUARTER([Date])<3,"S1","S2")
+    VAR Trimestre = "T"&QUARTER([Date])
+    VAR MoisLong = FORMAT([Date],"Mmmm")
+    VAR Mois = FORMAT([Date],"Mmm")
+    VAR Jour = FORMAT([Date],"dddd")
+    VAR NumMois = MONTH([Date])
+    VAR NumSemaine = WEEKNUM([Date],21)
+    VAR NumJourSem = WEEKDAY([Date],2)
+    VAR NumJourMois = DAY([Date])
+    RETURN ROW(
+        "Année", An,
+        "AnnéeSemestre", An&"-"&Semestre,
+        "AnnéeTrimestre", An&"-"&Trimestre,
+        "AnnéeMois", An&"-"&IF(NumMois<10,"0"&NumMois,NumMois),
+        "AnnéeSemaine", An&"-S"&NumSemaine,
+        "Semestre", Semestre,
+        "Trimestre", Trimestre,
+        "MoisLong", MoisLong,
+        "Mois", Mois,
+        "Semaine", "S "&NumSemaine,
+        "Jour", Jour,
+        "NumMois", NumMois,
+        "NumSemaine", NumSemaine,
+        "NumJourSemaine", NumJourSem,
+        "NumJourMois", NumJourMois
+    )
+)
+
+
+-- ============================================================
+-- PAGE TTS — CARTES KPI
+-- ============================================================
+
+-- KPI 1
+Total_Appels_Emis =
+COUNTROWS(tb_tts)
+
+-- KPI 2
+Total_Decroches =
+CALCULATE(
+    COUNTROWS(tb_tts),
+    tb_tts[disponibilite_client] = "Le client a décroché."
+)
+
+-- KPI 3
+Taux_Decroche_Global =
+DIVIDE(
+    [Total_Decroches],
+    [Total_Appels_Emis],
+    0
+)
+
+-- KPI 4
+Volume_Actif_Prepaid =
+CALCULATE(
+    SUM(mv_retour_actif_prepaid[nb_actifs_aujourdhui])
+)
+
+-- KPI 5
+Volume_Actif_Postpaid =
+CALCULATE(
+    SUM(mv_retour_actif_postpaid[nb_actifs_aujourdhui])
+)
+
+-- KPI 6
+Volume_Recharge_Prepaid =
+CALCULATE(
+    SUM(mv_retour_actif_prepaid[nb_recharges])
+)
+
+-- KPI 7
+Volume_Paiement_Postpaid =
+CALCULATE(
+    SUM(mv_retour_actif_postpaid[nb_payes])
+)
+
+
+-- ============================================================
+-- PAGE TTS — VISUELS
+-- ============================================================
+
+-- Visuel 1 : Évolution des Appels et Décrachés
+Evolution_Total_Contactes =
+COUNTROWS(tb_tts)
+
+Evolution_Total_Decroches =
+CALCULATE(
+    COUNTROWS(tb_tts),
+    tb_tts[disponibilite_client] = "Le client a décroché."
+)
+
+-- Visuel 2 : Joignabilité et Retour Actif par Campagne
+Taux_Decroche_Campagne =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(tb_tts),
+        tb_tts[disponibilite_client] = "Le client a décroché."
+    ),
+    COUNTROWS(tb_tts),
+    0
+)
+
+Taux_Retour_Actif_Campagne =
+DIVIDE(
+    SUM(mv_retour_actif_prepaid[nb_recharges]) +
+    SUM(mv_retour_actif_postpaid[nb_payes]),
+    SUM(mv_retour_actif_prepaid[nb_contactes]) +
+    SUM(mv_retour_actif_postpaid[nb_contactes]),
+    0
+)
+
+-- Visuel 4 : Top Motifs
+Volume_Motif =
+COUNTROWS(tb_tts)
+
+-- Données à jour au
+Date_Max_Donnees =
+VAR D1 = CALCULATE(MAX(tb_tts[startdate]))
+VAR D2 = CALCULATE(MAX(mv_retour_actif_prepaid[jour]))
+VAR D3 = CALCULATE(MAX(mv_retour_actif_postpaid[jour]))
+VAR DateMax = MAXX({D1, D2, D3}, [Value])
+RETURN
+"Données à jour au " & FORMAT(DateMax, "DD/MM/YYYY")
+
+-- MoM Appels
+MoM_Appels =
+VAR Mois_Actuel = [Total_Appels_Emis]
+VAR Mois_Precedent =
+    CALCULATE(
+        [Total_Appels_Emis],
+        DATEADD(DimDate[Date], -1, MONTH)
+    )
+RETURN
+DIVIDE(
+    Mois_Actuel - Mois_Precedent,
+    Mois_Precedent,
+    0
+)
+
+-- SoS Appels
+SoS_Appels =
+VAR Sem_Actuelle = [Total_Appels_Emis]
+VAR Sem_Precedente =
+    CALCULATE(
+        [Total_Appels_Emis],
+        DATEADD(DimDate[Date], -7, DAY)
+    )
+RETURN
+DIVIDE(
+    Sem_Actuelle - Sem_Precedente,
+    Sem_Precedente,
+    0
+)
+
+
+-- ============================================================
+-- PAGE RECLAMATIONS — CARTES KPI
+-- ============================================================
+
+-- KPI 1
+Total_Reclamations_Recues =
+COUNTROWS(tb_reclamations)
+
+-- KPI 2
+Reclamations_En_Cours =
+CALCULATE(
+    COUNTROWS(tb_reclamations),
+    tb_reclamations[statut_traitement] = "ASSIGNE"
+)
+
+-- KPI 3
+Reclamations_Traitees =
+CALCULATE(
+    COUNTROWS(tb_reclamations),
+    tb_reclamations[statut_traitement] = "TRAITE"
+)
+
+-- KPI 4
+Taux_Traitement =
+DIVIDE(
+    [Reclamations_Traitees],
+    [Total_Reclamations_Recues],
+    0
+)
+
+-- KPI 5
+Taux_Decroche_Reclamations =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(tb_reclamations),
+        tb_reclamations[statut_appel] = "DECROCHE"
+    ),
+    CALCULATE(
+        COUNTROWS(tb_reclamations),
+        tb_reclamations[statut_appel] <> BLANK()
+    ),
+    0
+)
+
+-- KPI 6
+Clients_Actifs_Prepaid =
+CALCULATE(
+    SUM(mv_retour_actif_recla_prepaid[nb_actifs_aujourdhui])
+)
+
+-- KPI 7
+Clients_Actifs_Postpaid =
+CALCULATE(
+    SUM(mv_retour_actif_recla_postpaid[nb_actifs_aujourdhui])
+)

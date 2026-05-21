@@ -1,0 +1,38 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: fr-CI
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["TTS","DIM_CAMPAGNE","RECLAMATIONS","DIM_ASSIGNATION","MESURES RECLAMATIONS","mv_retour_actif_prepaid","mv_retour_actif_postpaid","mv_retour_actif_recla_prepaid","mv_retour_actif_recla_postpaid","Mesure_TTS"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table TTS
+ref table DateTableTemplate_b0e66932-daee-4ad4-ba3b-df265b0d2389
+ref table LocalDateTable_6dd0962d-c4fd-4d01-9add-ce5e22229237
+ref table DIM_CAMPAGNE
+ref table RECLAMATIONS
+ref table LocalDateTable_a27967d0-c361-422c-8161-caab70d135ec
+ref table LocalDateTable_729be688-5183-4773-b1d7-32e912850907
+ref table DIM_ASSIGNATION
+ref table 'MESURES RECLAMATIONS'
+ref table mv_retour_actif_prepaid
+ref table LocalDateTable_ca5c231e-31de-41af-a64c-46341355513d
+ref table mv_retour_actif_postpaid
+ref table LocalDateTable_336d9f96-b218-47fb-b91f-bbd9527cf43b
+ref table mv_retour_actif_recla_prepaid
+ref table LocalDateTable_b9763a0b-0633-4a5c-957f-3855feba6354
+ref table mv_retour_actif_recla_postpaid
+ref table LocalDateTable_0e7ac798-868c-494e-a2d9-7d9679bbfd93
+ref table Mesure_TTS
+ref table DimDate
+ref table LocalDateTable_08d19bca-9268-47f2-addd-32876dbd6d52
+ref table LocalDateTable_e34f774b-d01e-484f-aabf-f4bad495b1f7
+
+ref cultureInfo en-US
+

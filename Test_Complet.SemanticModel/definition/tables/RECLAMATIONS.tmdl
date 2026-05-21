@@ -1,0 +1,153 @@
+table RECLAMATIONS
+	lineageTag: 81df14c9-a19e-45d8-b2ad-66280c4eaf56
+
+	column id_hash
+		dataType: string
+		lineageTag: dc103998-132d-4d3e-ab42-df162e4d2de6
+		summarizeBy: none
+		sourceColumn: id_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	column startdate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 57b6b33d-abb9-4a6a-9085-55bc1a526871
+		summarizeBy: none
+		sourceColumn: startdate
+
+		variation Variation
+			isDefault
+			relationship: da1ed583-1aa0-4bca-af40-133888c194d2
+			defaultHierarchy: LocalDateTable_e34f774b-d01e-484f-aabf-f4bad495b1f7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column categorie_de_non_paiement
+		dataType: string
+		lineageTag: 819a7d66-4ab6-484b-bc38-23a4cc71fbf3
+		summarizeBy: none
+		sourceColumn: categorie_de_non_paiement
+
+		annotation SummarizationSetBy = Automatic
+
+	column motif_non_paiement
+		dataType: string
+		lineageTag: fdb9cbfc-3e67-4065-a0a3-243bc41eda8e
+		summarizeBy: none
+		sourceColumn: motif_non_paiement
+
+		annotation SummarizationSetBy = Automatic
+
+	column statut_appel
+		dataType: string
+		lineageTag: 72cf6190-851c-40b4-b549-a61a917f83c1
+		summarizeBy: none
+		sourceColumn: statut_appel
+
+		annotation SummarizationSetBy = Automatic
+
+	column motif_reel
+		dataType: string
+		lineageTag: dce185d9-0c63-4492-9a76-c8706bd69768
+		summarizeBy: none
+		sourceColumn: motif_reel
+
+		annotation SummarizationSetBy = Automatic
+
+	column niveau
+		dataType: string
+		lineageTag: 2a12ed83-c5d4-44db-a463-d83f827696e6
+		summarizeBy: none
+		sourceColumn: niveau
+
+		annotation SummarizationSetBy = Automatic
+
+	column commentaire_bo
+		dataType: string
+		lineageTag: 100df7ec-17a4-4e79-b7db-9cd63e5e7ee8
+		summarizeBy: none
+		sourceColumn: commentaire_bo
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone_client
+		dataType: string
+		lineageTag: ae20b952-1190-4034-86c9-1ce1bbf30992
+		summarizeBy: none
+		sourceColumn: zone_client
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigne_a
+		dataType: string
+		lineageTag: 689ad638-0ac5-4cdd-94e1-bb44d69e2fef
+		summarizeBy: none
+		sourceColumn: assigne_a
+
+		annotation SummarizationSetBy = Automatic
+
+	column statut_traitement
+		dataType: string
+		lineageTag: 08e1b29c-4b35-4ea5-879c-a80d0d90a809
+		summarizeBy: none
+		sourceColumn: statut_traitement
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_assignation
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 468bbfec-8749-4171-a362-dbacb69c0608
+		summarizeBy: none
+		sourceColumn: date_assignation
+
+		variation Variation
+			isDefault
+			relationship: 434fa637-9384-4642-b469-46ee759648e4
+			defaultHierarchy: LocalDateTable_a27967d0-c361-422c-8161-caab70d135ec.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_traitement
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7139c9c1-332b-48fd-9593-2af10ced8d50
+		summarizeBy: none
+		sourceColumn: date_traitement
+
+		variation Variation
+			isDefault
+			relationship: 2a2db52f-4b96-4d00-8f28-a826c7c6b608
+			defaultHierarchy: LocalDateTable_729be688-5183-4773-b1d7-32e912850907.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column sous_motif
+		dataType: string
+		lineageTag: fc0a1b11-3f14-4b66-90fa-7064c646a40c
+		summarizeBy: none
+		sourceColumn: sous_motif
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_dossier
+		dataType: string
+		lineageTag: 4004f632-3ef9-4762-b30a-debc368665ea
+		summarizeBy: none
+		sourceColumn: id_dossier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RECLAMATIONS = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost:5432", "Analyse_perso_churn"), "select id_hash,startdate,categorie_de_non_paiement,motif_non_paiement,statut_appel,motif_reel,niveau,commentaire_bo,zone_client,assigne_a,statut_traitement,date_assignation,date_traitement,sous_motif,id_dossier#(lf)from tb_reclamations", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

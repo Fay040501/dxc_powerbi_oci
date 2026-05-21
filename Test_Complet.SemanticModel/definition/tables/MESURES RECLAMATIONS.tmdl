@@ -1,0 +1,79 @@
+table 'MESURES RECLAMATIONS'
+	lineageTag: 4c4e8bc1-9076-4911-898b-589ab8522bf3
+
+	measure Total_Reclamations_Recues = COUNTROWS(RECLAMATIONS)
+		formatString: 0
+		lineageTag: 1831f9f2-15c8-494d-b095-4fd7c1ec438e
+
+	measure Reclamations_En_Cours =
+			
+			CALCULATE(
+			    COUNTROWS(RECLAMATIONS),
+			    RECLAMATIONS[statut_traitement] = "ASSIGNE"
+			)
+		formatString: 0
+		lineageTag: 6b8f89e7-390c-48c0-a02b-6af3b8374ca5
+
+	measure Reclamations_Traitees =
+			
+			CALCULATE(
+			    COUNTROWS(RECLAMATIONS),
+			    RECLAMATIONS[statut_traitement] = "TRAITE"
+			)
+		formatString: 0
+		lineageTag: b2e9c02f-fa77-4a9a-a93f-7765f4773f70
+
+	measure Taux_Traitement =
+			
+			DIVIDE(
+			    [Reclamations_Traitees],
+			    [Total_Reclamations_Recues],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 75bc4439-b01f-44aa-a0d2-4dc747cfc503
+
+	measure Taux_Decroche =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(RECLAMATIONS),
+			        RECLAMATIONS[statut_appel] = "DECROCHE"
+			    ),
+			    CALCULATE(
+			        COUNTROWS(RECLAMATIONS),
+			        RECLAMATIONS[statut_appel] <> BLANK()
+			    ),
+			    0
+			)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: e68eb841-8e91-4351-a308-3dedd7403f8b
+
+	measure Clients_Actifs_Prepaid =
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_recla_prepaid[nb_actifs_aujourdhui])
+			)
+		formatString: 0
+		lineageTag: a6173909-d7bd-431a-abfb-3d329d687a94
+
+	measure Clients_Actifs_Postpaid =
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_recla_postpaid[nb_actifs_aujourdhui])
+			)
+		formatString: 0
+		lineageTag: d419ea07-8f2b-4467-886e-1fed316805dc
+
+	partition 'MESURES RECLAMATIONS' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Colonne 1" = _t]),
+				    #"Type modifié" = Table.TransformColumnTypes(Source,{{"Colonne 1", type text}}),
+				    #"Colonnes supprimées" = Table.RemoveColumns(#"Type modifié",{"Colonne 1"})
+				in
+				    #"Colonnes supprimées"
+
+	annotation PBI_ResultType = Table
+

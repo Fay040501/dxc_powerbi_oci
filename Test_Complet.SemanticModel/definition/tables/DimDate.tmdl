@@ -1,0 +1,195 @@
+table DimDate
+	lineageTag: c3bf6904-5fef-45cf-b6da-eb8ba95563bf
+
+	column Date
+		formatString: General Date
+		lineageTag: 2846f6d5-2a4f-4438-9141-e9b0f70c8502
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 0965be71-15b8-40a9-b04e-3861d849825c
+			defaultHierarchy: LocalDateTable_08d19bca-9268-47f2-addd-32876dbd6d52.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Année
+		formatString: 0
+		lineageTag: 6e84256c-7ad9-42f0-aff0-ae8f776f23f6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Année]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnéeSemestre
+		lineageTag: a8a444a0-cb33-48ca-9a14-fd89ad08b2cb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AnnéeSemestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnéeTrimestre
+		lineageTag: 387eb340-2927-4c7a-8577-0a68d9189455
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AnnéeTrimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnéeMois
+		lineageTag: dffcdf11-3628-457f-bb86-c753c7ee6fe5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AnnéeMois]
+		sortByColumn: Année
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnéeSemaine
+		lineageTag: 5a3acadb-cfd6-48f1-9288-08c8129ba50b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AnnéeSemaine]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semestre
+		lineageTag: c770a239-8da1-4100-a867-9bc1387dce23
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Semestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		lineageTag: 1fe54071-f3a5-4a40-8a07-3616619051b8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MoisLong
+		lineageTag: 01d2b6b8-8b7e-4013-a42f-eefa8ab92d0c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MoisLong]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mois
+		lineageTag: 7370911f-df1e-4db6-858d-2a9f0360290f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mois]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semaine
+		lineageTag: b437f29e-59a4-49f9-8fa8-698d1384c0b6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Semaine]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Jour
+		lineageTag: ec863917-20bf-4100-a447-9d15f8996eac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Jour]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumMois
+		formatString: 0
+		lineageTag: 76d631b6-6cd3-492e-b283-01299592c0de
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [NumMois]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumSemaine
+		formatString: 0
+		lineageTag: 91a169c7-5294-4771-9480-759e7ee5aa60
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [NumSemaine]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumJourSemaine
+		formatString: 0
+		lineageTag: 53cb98ca-b6de-44d9-bb0e-f4e4fdba9ea4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [NumJourSemaine]
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumJourMois
+		formatString: 0
+		lineageTag: a289c2e4-c8ad-4721-b171-b95532550ad1
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [NumJourMois]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = calculated
+		mode: import
+		source = ```
+				
+				VAR DateMin = MIN(TTS[startdate])
+				VAR DateMax = 
+				    MAXX(
+				        UNION(
+				            SELECTCOLUMNS(TTS, "date", TTS[startdate]),
+				            SELECTCOLUMNS(mv_retour_actif_prepaid, "date", mv_retour_actif_prepaid[jour]),
+				            SELECTCOLUMNS(mv_retour_actif_postpaid, "date", mv_retour_actif_postpaid[jour]),
+				            SELECTCOLUMNS(mv_retour_actif_recla_prepaid, "date", mv_retour_actif_recla_prepaid[jour]),
+				            SELECTCOLUMNS(mv_retour_actif_recla_postpaid, "date", mv_retour_actif_recla_postpaid[jour]),
+				            SELECTCOLUMNS(RECLAMATIONS, "date", RECLAMATIONS[startdate])
+				        ),
+				        [date]
+				    )
+				RETURN
+				GENERATE(
+				    CALENDAR(DateMin, DateMax),
+				    VAR An = YEAR([Date])
+				    VAR Semestre = IF(QUARTER([Date])<3,"S1","S2")
+				    VAR Trimestre = "T"&QUARTER([Date])
+				    VAR MoisLong = FORMAT([Date],"Mmmm")
+				    VAR Mois = FORMAT([Date],"Mmm")
+				    VAR Jour = FORMAT([Date],"dddd")
+				    VAR NumMois = MONTH([Date])
+				    VAR NumSemaine = WEEKNUM([Date],21)
+				    VAR NumJourSem = WEEKDAY([Date],2)
+				    VAR NumJourMois = DAY([Date])
+				    RETURN ROW(
+				        "Année", An,
+				        "AnnéeSemestre", An&"-"&Semestre,
+				        "AnnéeTrimestre", An&"-"&Trimestre,
+				        "AnnéeMois", An&"-"&IF(NumMois<10,"0"&NumMois,NumMois),
+				        "AnnéeSemaine", An&"-S"&NumSemaine,
+				        "Semestre", Semestre,
+				        "Trimestre", Trimestre,
+				        "MoisLong", MoisLong,
+				        "Mois", Mois,
+				        "Semaine", "S "&NumSemaine,
+				        "Jour", Jour,
+				        "NumMois", NumMois,
+				        "NumSemaine", NumSemaine,
+				        "NumJourSemaine", NumJourSem,
+				        "NumJourMois", NumJourMois
+				    )
+				)
+				```
+
+	annotation PBI_Id = 9071f44497af45749821e852fd53c003
+

@@ -1,0 +1,124 @@
+table Mesure_TTS
+	lineageTag: cdf99b49-ea00-4ded-9528-03579e1a8cd2
+
+	measure Total_Appels_Emis = COUNTROWS(TTS)
+		formatString: 0
+		lineageTag: 67834663-7777-473a-b809-a924935f7138
+
+	measure Total_Decroches =
+			
+			CALCULATE(
+			    COUNTROWS(TTS),
+			    TTS[disponibilite_client] = "Le client a décroché."
+			)
+		formatString: 0
+		lineageTag: eb185dcb-7382-40e4-933b-769d78d4a6cf
+
+	measure Taux_Decroche_Global =
+			
+			DIVIDE(
+			    [Total_Decroches],
+			    [Total_Appels_Emis],
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 49400740-7d13-454f-bd58-f394c56d94fc
+
+	measure Volume_Actif_Postpaid = ```
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_postpaid[nb_actifs_aujourdhui])
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 05cc06f9-7d67-479a-9aa2-5da5abcec781
+
+	measure Volume_Actif_Prepaid =
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_prepaid[nb_actifs_aujourdhui])
+			)
+		formatString: 0
+		lineageTag: 420d4b52-01a7-4ff5-828d-940e1c5bdc12
+
+	measure Volume_Recharge_Prepaid =
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_prepaid[nb_recharges])
+			)
+		formatString: 0
+		lineageTag: cdd88d60-04c7-4d97-879a-7b2ab6bf2df7
+
+	measure Volume_Paiement_Postpaid =
+			
+			CALCULATE(
+			    SUM(mv_retour_actif_postpaid[nb_payes])
+			)
+		formatString: 0
+		lineageTag: 5957d30c-95cd-4656-9477-6f0e7cb01e0a
+
+	measure Evolution_Total_Contactes
+		lineageTag: eab14b7d-4b35-4c08-99bb-3cf336e30eca
+
+	measure Taux_Retour_Actif_Campagne =
+			
+			DIVIDE(
+			    SUM(mv_retour_actif_prepaid[nb_recharges]) +
+			    SUM(mv_retour_actif_postpaid[nb_payes]),
+			    COUNTROWS(TTS),
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 40b98757-5379-4ec3-9246-2f836715499c
+
+	measure Taux_Decroche_Campagne =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(TTS),
+			        TTS[disponibilite_client] = "Le client a décroché."
+			    ),
+			    COUNTROWS(TTS),
+			    0
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: a088b71a-d8e8-4e64-85cb-ec90f9bb439f
+
+	measure Derniere_Mise_A_Jour =
+			
+			VAR DateMax =
+			    MAXX(
+			        UNION(
+			            SELECTCOLUMNS(TTS, "date", DATE(YEAR(TTS[startdate]), MONTH(TTS[startdate]), DAY(TTS[startdate]))),
+			            SELECTCOLUMNS(mv_retour_actif_prepaid, "date", mv_retour_actif_prepaid[jour]),
+			            SELECTCOLUMNS(mv_retour_actif_postpaid, "date", mv_retour_actif_postpaid[jour])
+			        ),
+			        [date]
+			    )
+			RETURN
+			"Données à jour au " & FORMAT(DateMax, "DD/MM/YYYY")
+		lineageTag: d8bff4a6-fae0-4d21-9da3-400661ecafa3
+
+	measure Date_Max_Donnees =
+			
+			VAR D1 = CALCULATE(MAX(TTS[startdate]))
+			VAR D2 = CALCULATE(MAX(mv_retour_actif_prepaid[jour]))
+			VAR D3 = CALCULATE(MAX(mv_retour_actif_postpaid[jour]))
+			VAR DateMax = MAXX({D1, D2, D3}, [Value])
+			RETURN
+			"Données à jour au " & FORMAT(DateMax, "DD/MM/YYYY")
+		lineageTag: 1a950ea5-73e4-4809-9d18-f35ae5935f0f
+
+	partition Mesure_TTS = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Colonne 1" = _t]),
+				    #"Type modifié" = Table.TransformColumnTypes(Source,{{"Colonne 1", type text}}),
+				    #"Colonnes supprimées" = Table.RemoveColumns(#"Type modifié",{"Colonne 1"})
+				in
+				    #"Colonnes supprimées"
+
+	annotation PBI_ResultType = Table
+

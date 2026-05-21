@@ -1,0 +1,220 @@
+table mv_retour_actif_recla_prepaid
+	lineageTag: b533792b-8be9-4130-8038-1bcab2c42c2a
+
+	column jour
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ef89fb05-1261-4b18-84d7-1174d6210cdf
+		summarizeBy: none
+		sourceColumn: jour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column mois_recla
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 79c812d5-bc7b-4ad3-91e8-ef098c5e80a8
+		summarizeBy: none
+		sourceColumn: mois_recla
+
+		variation Variation
+			isDefault
+			relationship: 84a026b3-b971-42a6-87a8-1d2e578033de
+			defaultHierarchy: LocalDateTable_b9763a0b-0633-4a5c-957f-3855feba6354.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column campagne
+		dataType: string
+		lineageTag: 0a4a7e1b-dea6-444f-80fd-3aec85a643e1
+		summarizeBy: none
+		sourceColumn: campagne
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_reclamations
+		dataType: int64
+		formatString: 0
+		lineageTag: 60204ffd-f43b-450d-9968-665d894623e1
+		summarizeBy: sum
+		sourceColumn: nb_reclamations
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_traites
+		dataType: int64
+		formatString: 0
+		lineageTag: 5158d26c-fec7-4000-89a9-f9bc581136c8
+		summarizeBy: sum
+		sourceColumn: nb_traites
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_assignes
+		dataType: int64
+		formatString: 0
+		lineageTag: 6fa3a097-bcfa-4234-be2c-352ab8c95ce4
+		summarizeBy: sum
+		sourceColumn: nb_assignes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_non_assignes
+		dataType: int64
+		formatString: 0
+		lineageTag: 3dad25e4-c1f1-4a6a-bc7a-395678c71863
+		summarizeBy: sum
+		sourceColumn: nb_non_assignes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_decroches
+		dataType: int64
+		formatString: 0
+		lineageTag: 03375d98-7861-4ac1-9e9e-d1ccc0c230da
+		summarizeBy: sum
+		sourceColumn: nb_decroches
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_actifs_au_appel
+		dataType: int64
+		formatString: 0
+		lineageTag: cd96ac31-567f-4c88-9f4f-73c73355ba57
+		summarizeBy: sum
+		sourceColumn: nb_actifs_au_appel
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_actifs_aujourdhui
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e259d78-4773-4c16-8959-e1af65cb2ce6
+		summarizeBy: sum
+		sourceColumn: nb_actifs_aujourdhui
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_recharges
+		dataType: int64
+		formatString: 0
+		lineageTag: 974c5e13-5714-47d2-b5bb-04ed269b9dfd
+		summarizeBy: sum
+		sourceColumn: nb_recharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column montant_total
+		dataType: double
+		lineageTag: 78108ba1-b30f-47bf-ab1e-a7e0cd7bac12
+		summarizeBy: sum
+		sourceColumn: montant_total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nb_decroche_et_recharge
+		dataType: int64
+		formatString: 0
+		lineageTag: d7123270-74ce-4f41-9e86-e2d96ba4662c
+		summarizeBy: sum
+		sourceColumn: nb_decroche_et_recharge
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_decroche_et_actif
+		dataType: int64
+		formatString: 0
+		lineageTag: 560fd72d-6706-414d-b62d-5fe0d6ec7f50
+		summarizeBy: sum
+		sourceColumn: nb_decroche_et_actif
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_traite_et_recharge
+		dataType: int64
+		formatString: 0
+		lineageTag: d829f821-5ff6-4ced-b770-65ef0d7dca69
+		summarizeBy: sum
+		sourceColumn: nb_traite_et_recharge
+
+		annotation SummarizationSetBy = Automatic
+
+	column delai_moyen_assignation
+		dataType: double
+		lineageTag: 8cfab4a7-10b2-4286-a970-08f2cdaf9f49
+		summarizeBy: sum
+		sourceColumn: delai_moyen_assignation
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column delai_moyen_traitement
+		dataType: double
+		lineageTag: 4f9424c8-868f-450d-99c5-03b8140a74c3
+		summarizeBy: sum
+		sourceColumn: delai_moyen_traitement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_traitement
+		dataType: double
+		lineageTag: f2b1442c-1e27-4e5b-97c6-5c48cf96389c
+		summarizeBy: sum
+		sourceColumn: taux_traitement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_decroche
+		dataType: double
+		lineageTag: 3a5c08e2-5f6b-4444-87b3-4b369a078b16
+		summarizeBy: sum
+		sourceColumn: taux_decroche
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_retour
+		dataType: double
+		lineageTag: d593d20a-13a9-4699-9998-bdf387ed252f
+		summarizeBy: sum
+		sourceColumn: taux_retour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_actif_aujourdhui
+		dataType: double
+		lineageTag: a9929d4c-e33c-458a-886d-86c6623b2072
+		summarizeBy: sum
+		sourceColumn: taux_actif_aujourdhui
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mv_retour_actif_recla_prepaid = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost:5432", "Analyse_perso_churn"), "select * from mv_retour_actif_recla_prepaid ", null, [EnableFolding=true]),
+				    #"Type modifié" = Table.TransformColumnTypes(Source,{{"jour", type date}, {"mois_recla", type date}})
+				in
+				    #"Type modifié"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

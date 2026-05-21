@@ -1,0 +1,25 @@
+table DIM_CAMPAGNE
+	lineageTag: b271bf75-0b95-4b97-82db-f93e9235605c
+
+	column campagne
+		dataType: string
+		lineageTag: f7898135-fbc0-4558-acd0-6d130d73bfeb
+		summarizeBy: none
+		sourceColumn: campagne
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_CAMPAGNE = m
+		mode: import
+		source =
+				let
+				    Source = TTS,
+				    #"Autres colonnes supprimées" = Table.SelectColumns(Source,{"campagne"}),
+				    #"Doublons supprimés" = Table.Distinct(#"Autres colonnes supprimées")
+				in
+				    #"Doublons supprimés"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

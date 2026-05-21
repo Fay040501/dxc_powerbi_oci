@@ -1,0 +1,25 @@
+table DIM_ASSIGNATION
+	lineageTag: 1a25e7b7-286a-4a42-96b6-faa60f685891
+
+	column statut_traitement
+		dataType: string
+		lineageTag: 4bc0dc64-c6c0-47d1-af81-da69bdbc5c2e
+		summarizeBy: none
+		sourceColumn: statut_traitement
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_ASSIGNATION = m
+		mode: import
+		source =
+				let
+				    Source = RECLAMATIONS,
+				    #"Autres colonnes supprimées" = Table.SelectColumns(Source,{"statut_traitement"}),
+				    #"Doublons supprimés" = Table.Distinct(#"Autres colonnes supprimées")
+				in
+				    #"Doublons supprimés"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

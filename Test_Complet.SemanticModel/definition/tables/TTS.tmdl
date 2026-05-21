@@ -1,0 +1,167 @@
+table TTS
+	lineageTag: 47192ba4-8737-4fa8-93bf-39ab97b6cfae
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 06e97320-45d1-4a68-ab3f-f76efa9fc387
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column startdate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: db6c1193-c584-4774-88d3-860805518d66
+		summarizeBy: none
+		sourceColumn: startdate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column identite_client
+		dataType: string
+		lineageTag: cfae96e8-9e57-4ff5-a7cc-567ae6823a31
+		summarizeBy: none
+		sourceColumn: identite_client
+
+		annotation SummarizationSetBy = Automatic
+
+	column contact
+		dataType: string
+		lineageTag: 8d983e2b-f03e-49fc-9875-05c48316da34
+		summarizeBy: none
+		sourceColumn: contact
+
+		annotation SummarizationSetBy = Automatic
+
+	column nd_clean
+		dataType: string
+		lineageTag: f7dc8cc0-a4cd-46b6-a3fb-e4fa769524d7
+		summarizeBy: none
+		sourceColumn: nd_clean
+
+		annotation SummarizationSetBy = Automatic
+
+	column nd_source
+		dataType: string
+		lineageTag: ff637d87-07b6-45f5-99f6-22415ec6ac57
+		summarizeBy: none
+		sourceColumn: nd_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column bon_interlocuteur
+		dataType: string
+		lineageTag: 02456cbc-8f63-419d-9b9c-69fd2eba614d
+		summarizeBy: none
+		sourceColumn: bon_interlocuteur
+
+		annotation SummarizationSetBy = Automatic
+
+	column disponibilite_client
+		dataType: string
+		lineageTag: 6dbd29df-32dd-40db-8d95-d9fa10c672d1
+		summarizeBy: none
+		sourceColumn: disponibilite_client
+
+		annotation SummarizationSetBy = Automatic
+
+	column categorie_de_non_paiement
+		dataType: string
+		lineageTag: 1c8d7193-24ac-4e57-9f7d-7a3f6dce0c68
+		summarizeBy: none
+		sourceColumn: categorie_de_non_paiement
+
+		annotation SummarizationSetBy = Automatic
+
+	column motif_non_paiement
+		dataType: string
+		lineageTag: 1351e29e-414b-49cc-8470-52be933db57b
+		summarizeBy: none
+		sourceColumn: motif_non_paiement
+
+		annotation SummarizationSetBy = Automatic
+
+	column commentaire
+		dataType: string
+		lineageTag: 60e67dfc-ebc0-4431-8d77-149985c55324
+		summarizeBy: none
+		sourceColumn: commentaire
+
+		annotation SummarizationSetBy = Automatic
+
+	column preoccupation
+		dataType: string
+		lineageTag: 583462d1-1e7d-488d-9188-5256fabe8e65
+		summarizeBy: none
+		sourceColumn: preoccupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column commentaire_preoccupation
+		dataType: string
+		lineageTag: a3cbb286-b74c-47f6-a081-60464ece7dc9
+		summarizeBy: none
+		sourceColumn: commentaire_preoccupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column type_de_base
+		dataType: string
+		lineageTag: 149f0dde-8605-4022-b299-d4580039e00a
+		summarizeBy: none
+		sourceColumn: type_de_base
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_insertion
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: be1d1722-d9d0-429d-a82c-66a10d167abc
+		summarizeBy: none
+		sourceColumn: date_insertion
+
+		variation Variation
+			isDefault
+			relationship: aad3cd47-0402-4ccf-bfaa-ee8bb57251b6
+			defaultHierarchy: LocalDateTable_6dd0962d-c4fd-4d01-9add-ce5e22229237.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column campagne
+		dataType: string
+		lineageTag: 5b7f6f44-5b72-469f-9f94-852424f26927
+		summarizeBy: none
+		sourceColumn: campagne
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_hash
+		dataType: string
+		lineageTag: 0df028dd-7800-403e-9b9f-740a8a086a43
+		summarizeBy: none
+		sourceColumn: id_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	partition TTS = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost:5432", "Analyse_perso_churn"), "select * from tb_tts", null, [EnableFolding=true]),
+				    #"Type modifié" = Table.TransformColumnTypes(Source,{{"startdate", type date}}),
+				    #"Colonnes supprimées" = Table.RemoveColumns(#"Type modifié",{"firstresponsedate", "enddate", "identite_du_teleconseiller", "nd_fibre"}),
+				    #"Type modifié1" = Table.TransformColumnTypes(#"Colonnes supprimées",{{"date_insertion", type date}}),
+				    #"Colonnes supprimées1" = Table.RemoveColumns(#"Type modifié1",{"fichier"})
+				in
+				    #"Colonnes supprimées1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

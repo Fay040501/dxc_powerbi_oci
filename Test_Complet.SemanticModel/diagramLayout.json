@@ -1,0 +1,161 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 282.99410026651367,
+        "y": 1.1274665345916768
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 50,
+            "y": 201.74014789769222
+          },
+          "nodeIndex": "DIM_ASSIGNATION",
+          "nodeLineageTag": "1a25e7b7-286a-4a42-96b6-faa60f685891",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 902.62216291713662,
+            "y": -10.378697769093719
+          },
+          "nodeIndex": "DIM_CAMPAGNE",
+          "nodeLineageTag": "b271bf75-0b95-4b97-82db-f93e9235605c",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 298.9689264236365,
+            "y": 307.23462609807922
+          },
+          "nodeIndex": "RECLAMATIONS",
+          "nodeLineageTag": "81df14c9-a19e-45d8-b2ad-66280c4eaf56",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 631.09440014060579,
+            "y": 21.139997208583431
+          },
+          "nodeIndex": "TTS",
+          "nodeLineageTag": "47192ba4-8737-4fa8-93bf-39ab97b6cfae",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1487.5461165796214,
+            "y": 400.21930638428483
+          },
+          "nodeIndex": "MESURES RECLAMATIONS",
+          "nodeLineageTag": "4c4e8bc1-9076-4911-898b-589ab8522bf3",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1654.6221629171366,
+            "y": 18.943343789266862
+          },
+          "nodeIndex": "mv_retour_actif_prepaid",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1167.6781897147357,
+            "y": 320.54063729839044
+          },
+          "nodeIndex": "mv_retour_actif_postpaid",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2222.6221629171368,
+            "y": 18.943343789266862
+          },
+          "nodeIndex": "mv_retour_actif_recla_prepaid",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1938.6221629171366,
+            "y": 18.943343789266862
+          },
+          "nodeIndex": "mv_retour_actif_recla_postpaid",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2456.6221629171368,
+            "y": 263.45966753374211
+          },
+          "nodeIndex": "Mesure_TTS",
+          "nodeLineageTag": "cdf99b49-ea00-4ded-9528-03579e1a8cd2",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 835.93974115075048,
+            "y": 469.13963403674325
+          },
+          "nodeIndex": "DimDate",
+          "nodeLineageTag": "c3bf6904-5fef-45cf-b6da-eb8ba95563bf",
+          "size": {
+            "height": 297.24398715948371,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Toutes les tables",
+      "zoomValue": 70.95554390096882,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Toutes les tables",
+  "defaultDiagram": "Toutes les tables"
+}

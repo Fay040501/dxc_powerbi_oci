@@ -1,0 +1,164 @@
+table mv_retour_actif_postpaid
+	lineageTag: 23b6ade8-4278-4ee6-b20b-02ee21a5a9d4
+
+	column jour
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4046a029-0171-4ef2-9aee-a2ac982fc11a
+		summarizeBy: none
+		sourceColumn: jour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column mois_appel
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 11c30098-6838-4464-974a-8f8e5d65d9c7
+		summarizeBy: none
+		sourceColumn: mois_appel
+
+		variation Variation
+			isDefault
+			relationship: e14bb5ee-3078-409a-9192-c1a99b028920
+			defaultHierarchy: LocalDateTable_336d9f96-b218-47fb-b91f-bbd9527cf43b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column campagne
+		dataType: string
+		lineageTag: f5809a09-f2d0-4825-ab4d-965167d0fd17
+		summarizeBy: none
+		sourceColumn: campagne
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_contactes
+		dataType: int64
+		formatString: 0
+		lineageTag: ec95c5ed-ea25-4099-9e3b-6a2de2083af9
+		summarizeBy: sum
+		sourceColumn: nb_contactes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_decroches
+		dataType: int64
+		formatString: 0
+		lineageTag: cf5cde58-5e37-4a53-bcfa-da6df4ca06a1
+		summarizeBy: sum
+		sourceColumn: nb_decroches
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_actifs_au_appel
+		dataType: int64
+		formatString: 0
+		lineageTag: cbfc8abc-a1f4-4fed-ace6-7b5db1fa13fe
+		summarizeBy: sum
+		sourceColumn: nb_actifs_au_appel
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_actifs_aujourdhui
+		dataType: int64
+		formatString: 0
+		lineageTag: 3b1d618e-c9f5-4b19-b404-e6ed51bbed67
+		summarizeBy: sum
+		sourceColumn: nb_actifs_aujourdhui
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_payes
+		dataType: int64
+		formatString: 0
+		lineageTag: 174d7771-1240-43aa-af50-979e2b9ffb44
+		summarizeBy: sum
+		sourceColumn: nb_payes
+
+		annotation SummarizationSetBy = Automatic
+
+	column montant_total
+		dataType: double
+		lineageTag: bf142248-05f2-42b0-9902-274b00768bee
+		summarizeBy: sum
+		sourceColumn: montant_total
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nb_decroche_et_paye
+		dataType: int64
+		formatString: 0
+		lineageTag: ef20cabc-ba0b-4d25-b0f5-900ef9851b17
+		summarizeBy: sum
+		sourceColumn: nb_decroche_et_paye
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_decroche_et_actif
+		dataType: int64
+		formatString: 0
+		lineageTag: c71440a7-1b88-48d0-8bf9-91e531dedcd9
+		summarizeBy: sum
+		sourceColumn: nb_decroche_et_actif
+
+		annotation SummarizationSetBy = Automatic
+
+	column taux_retour
+		dataType: double
+		lineageTag: 68655770-7c7b-45f2-911e-43fe849870a2
+		summarizeBy: sum
+		sourceColumn: taux_retour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_decroche
+		dataType: double
+		lineageTag: 55f136b6-a368-4e4d-84b7-299c36631eae
+		summarizeBy: sum
+		sourceColumn: taux_decroche
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_actif_au_appel
+		dataType: double
+		lineageTag: d95b6ee7-e93e-4b71-aa8f-5cd3aaf82503
+		summarizeBy: sum
+		sourceColumn: taux_actif_au_appel
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column taux_actif_aujourdhui
+		dataType: double
+		lineageTag: df2367c3-da3f-4d37-9eb0-4b6007572cc0
+		summarizeBy: sum
+		sourceColumn: taux_actif_aujourdhui
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mv_retour_actif_postpaid = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("localhost:5432", "Analyse_perso_churn"), "select * from mv_retour_actif_postpaid ", null, [EnableFolding=true]),
+				    #"Type modifié" = Table.TransformColumnTypes(Source,{{"jour", type date}, {"mois_appel", type date}})
+				in
+				    #"Type modifié"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
